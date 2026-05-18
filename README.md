@@ -9,7 +9,7 @@
 
 Enter the repository and create a build folder
 ```
-cd nlmaves/
+cd chebychev/
 mkdir build
 cd build/
 ```
