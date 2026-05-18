@@ -1,1 +1,1 @@
-add_subdirectory(EckhardtHochbruck2026)
+add_subdirectory(EckhardtGrimmHochbruck2026)

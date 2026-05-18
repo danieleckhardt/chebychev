@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplot2tikz import save as tikz_save
+# from matplot2tikz import save as tikz_save
 
 
 # =============================================================================
@@ -267,8 +267,8 @@ def main():
 
         beta_str = format_float(beta)
 
-        tikz_save(output_dir / f"time_error{beta_str}.tikz", figure=fig_time)
-        tikz_save(output_dir / f"mv_error{beta_str}.tikz", figure=fig_mv)
+        # tikz_save(output_dir / f"time_error{beta_str}.tikz", figure=fig_time)
+        # tikz_save(output_dir / f"mv_error{beta_str}.tikz", figure=fig_mv)
 
         fig_time.savefig(output_dir / f"time_error{beta_str}.png", dpi=300)
         fig_mv.savefig(output_dir / f"mv_error{beta_str}.png", dpi=300)
