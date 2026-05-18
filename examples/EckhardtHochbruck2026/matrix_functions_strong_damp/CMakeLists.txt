@@ -1,0 +1,3 @@
+add_executable(matrix_functions_strong_damp clc_matrix_func.cc)
+target_link_libraries(matrix_functions_strong_damp  algorithm)
+DEAL_II_SETUP_TARGET(matrix_functions_strong_damp)

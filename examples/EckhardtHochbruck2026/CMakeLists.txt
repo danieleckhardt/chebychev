@@ -1,0 +1,7 @@
+add_subdirectory(matrix_functions_conv_velocity)
+add_subdirectory(matrix_functions_strong_damp)
+add_subdirectory(chebyshev_arnoldi)
+
+add_executable(runall_Paper26 runall.cc)
+target_link_libraries(runall_Paper26 algorithm)
+DEAL_II_SETUP_TARGET(runall_Paper26)

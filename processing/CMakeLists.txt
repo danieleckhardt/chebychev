@@ -1,0 +1,9 @@
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+
+ADD_LIBRARY(processing
+  ${CMAKE_CURRENT_SOURCE_DIR}/solving.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/process_solution.cpp
+
+  )
+
+DEAL_II_SETUP_TARGET(processing)

@@ -1,0 +1,3 @@
+add_executable(chebyshev_arnoldi chebyshev_arnoldi.cc)
+target_link_libraries(chebyshev_arnoldi  algorithm)
+DEAL_II_SETUP_TARGET(chebyshev_arnoldi)
