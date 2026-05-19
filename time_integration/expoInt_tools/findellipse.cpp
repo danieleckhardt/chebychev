@@ -54,7 +54,7 @@ void FindEllipse<dim>::get_start_vectors(
 {
     // --- Random number generator (kept local, but could be static for efficiency)
     // std::random_device rd;
-    const unsigned int seed = 61; // Fixed seed for reproducibility
+    const unsigned int seed = 80; // Fixed seed for reproducibility
     std::mt19937 gen(seed);
     std::uniform_real_distribution<double> dis(0.0, 1.0);
 
@@ -62,8 +62,8 @@ void FindEllipse<dim>::get_start_vectors(
 
     // --- Resize and initialize random vectors and store
     Vector<std::complex<double>> tmpu(n), tmpv(n);
-    tmpu = start_vec_krylov_u;
-    tmpv = start_vec_krylov_v;
+    // tmpu = start_vec_krylov_u;
+    // tmpv = start_vec_krylov_v;
     start_vec_u.reinit(n);
     start_vec_v.reinit(n);
 
@@ -75,39 +75,46 @@ void FindEllipse<dim>::get_start_vectors(
 
     if (!orthogonalize)
         return;
-
-    // --- Apply operators
     Vector<std::complex<double>> Au(n), Mv(n);
+        
+    for(int j= 0; j < detected_vectors.size(); j++){
+        tmpu = detected_vectors[j][0];
+        tmpv = detected_vectors[j][1];
 
-    homogeneous_matrix.vmult(Au, tmpu);
-    mass_matrix.vmult(Mv, tmpv);
+        // --- Apply operators
+    
+        homogeneous_matrix.vmult(Au, tmpu);
+        mass_matrix.vmult(Mv, tmpv);
+    
+        // --- Compute inner products (Hermitian)
+        std::complex<double> num = 0.0;
+        std::complex<double> den = 0.0;
+    
+        for (unsigned int i = 0; i < n; ++i)
+        {
+            num += std::conj(start_vec_u[i]) * Au[i];
+            num += std::conj(start_vec_v[i]) * Mv[i];
+    
+            den += std::conj(tmpu[i]) * Au[i];
+            den += std::conj(tmpv[i]) * Mv[i];
+        }
+    
+        // --- Safety check
+        const double norm = std::abs(den);
+        if (norm == 0.0)
+            return;
+    
+        std::complex<double> alpha = num / den;
+    
+        // --- Projection step (consistent update)
+        for (unsigned int i = 0; i < n; ++i)
+        {
+            start_vec_u[i] -= alpha * start_vec_u[i];
+            start_vec_v[i] -= alpha * start_vec_v[i];
+        }
 
-    // --- Compute inner products (Hermitian)
-    std::complex<double> num = 0.0;
-    std::complex<double> den = 0.0;
-
-    for (unsigned int i = 0; i < n; ++i)
-    {
-        num += std::conj(start_vec_u[i]) * Au[i];
-        num += std::conj(start_vec_v[i]) * Mv[i];
-
-        den += std::conj(tmpu[i]) * Au[i];
-        den += std::conj(tmpv[i]) * Mv[i];
     }
 
-    // --- Safety check
-    const double norm = std::abs(den);
-    if (norm == 0.0)
-        return;
-
-    std::complex<double> alpha = num / den;
-
-    // --- Projection step (consistent update)
-    for (unsigned int i = 0; i < n; ++i)
-    {
-        start_vec_u[i] -= alpha * start_vec_u[i];
-        start_vec_v[i] -= alpha * start_vec_v[i];
-    }
 }
 
 template <int dim>
@@ -334,8 +341,8 @@ bool FindEllipse<dim>::estimate_ellipse_chebyshev_arnoldi( std::function<int(Vec
             auto it = std::find_if(detected_points.begin(), detected_points.end(), [&](const std::complex<double>& c){ return almost_equal(c, lambda, tol_fix);});
             if (it == detected_points.end()) {
                 detected_points.push_back(lambda);
-                // detected_vectors.push_back({sorted_eigenvectors_u[count],
-                //                             sorted_eigenvectors_v[count]});
+                detected_vectors.push_back({sorted_eigenvectors_u[count],
+                                             sorted_eigenvectors_v[count]});
                 std::cout << "New eigenpair!" << " (" << found_count  <<  ". in this loop)." <<  std::endl;
                 found_count++;
                 found_new_points = true;
