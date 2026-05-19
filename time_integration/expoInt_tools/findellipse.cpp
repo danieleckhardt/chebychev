@@ -54,7 +54,7 @@ void FindEllipse<dim>::get_start_vectors(
 {
     // --- Random number generator (kept local, but could be static for efficiency)
     // std::random_device rd;
-    const unsigned int seed = 80; // Fixed seed for reproducibility
+    const unsigned int seed = 61; // Fixed seed for reproducibility
     std::mt19937 gen(seed);
     std::uniform_real_distribution<double> dis(0.0, 1.0);
 
