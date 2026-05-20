@@ -42,5 +42,5 @@ Start a container
 ```
 docker run -i -t -v .:/home/dealii/chebychev dealii
 ```
-Continue the compilation as described above.  ( Does not work on Network Boot devices of KIT! )
+Continue the compilation as described above.  (You have to use "sudo" in front of all commands! )
 
