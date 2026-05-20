@@ -40,7 +40,7 @@ docker build -t dealii .devcontainer/
 ```
 Start a container
 ```
-docker run -i -t -v .:/home/dealii/nlmaves dealii
+docker run -i -t -v .:/home/dealii/chebychev dealii
 ```
 Continue the compilation as described above.  ( Does not work on Network Boot devices of KIT! )
 
